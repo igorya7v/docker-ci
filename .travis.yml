@@ -7,3 +7,29 @@ before_install:
     
 script:
     - docker run -e CI=true docker-ci-tests npm run test
+    
+deploy:
+    # travis-ci comes preconfigured to deploy an application
+    # to a hadful of different hosting providers such as
+    # AWS, Digital Ocean, etc.
+    provider: elasticbeanstalk
+    region: "us-east-1"
+    # from AWS Beanstalk
+    app: "docker-ci"
+    env: "DockerCi-env"
+    # AWS S3 bucket 
+    # app will be zipped and uploaded to S3 bucket.
+    # Then the AWS Elastic Beanstalk will 
+    # consume it from that S3 bucket.
+    bucket_name: "elasticbeanstalk-us-east-1-351155375043"
+    bucket_path: "docker-ci"
+    
+    on:
+        branch: master
+        
+    access_key_id: 
+        secure: "$AWS_ACCESS_KEY"
+        
+    secret_access_key:
+        secure: "$AWS_SECRET_KEY"
+    
